@@ -24,16 +24,20 @@ const colors = {
 export default function NewsList() {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
+useEffect(() => {
+  fetch('/api/getNews')
+    .then((res) => res.json())
+    .then((data) => {
+      console.log('Fetched news data:', data);
+      setNews(Array.isArray(data) ? data : []); // هنا التعديل
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.error('Fetch error:', err);
+      setLoading(false);
+    });
+}, []);
 
-  useEffect(() => {
-    fetch('/api/getNews')
-      .then((res) => res.json())
-      .then((data) => {
-        setNews(data.news);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
 
   if (loading)
     return (

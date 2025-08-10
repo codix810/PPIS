@@ -51,7 +51,7 @@ export default function TopStudentsList() {
 
   return (
     <>
-        <div className=" py-16 px-6 md:px-12 items-start">
+        <div className=" py-6 px-6 md:px-12 items-start">
           <h1 className="text-4xl font-bold mt-5 mb-2 text-start" style={{ color:"red" }}
           >|Students      </h1></div>
     <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 p-6">
