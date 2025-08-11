@@ -32,7 +32,7 @@ export default function TeachersList() {
 
   if (loading)
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center bg-black items-center h-screen">
         {/* 3 نقاط حمراء متحركة */}
         <div className="flex space-x-2">
           {[...Array(3)].map((_, i) => (

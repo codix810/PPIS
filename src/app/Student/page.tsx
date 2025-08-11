@@ -31,13 +31,13 @@ export default function TopStudentsList() {
 
   if (loading)
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center bg-black  items-center h-screen">
         {/* 3 نقاط حمراء متحركة */}
         <div className="flex space-x-2">
           {[...Array(3)].map((_, i) => (
             <span
               key={i}
-              className="w-4 h-4 bg-red-600 rounded-full animate-bounce"
+              className="w-4 h-4 bg-red-600  rounded-full animate-bounce"
               style={{ animationDelay: `${i * 0.2}s` }}
             />
           ))}
@@ -51,7 +51,7 @@ export default function TopStudentsList() {
 
   return (
     <>
-        <div className=" py-6 px-6 md:px-12 items-start">
+        <div className=" py-6 px-6 md:px-12 items-start  ">
           <h1 className="text-4xl font-bold mt-5 mb-2 text-start" style={{ color:"red" }}
           >|Students      </h1></div>
     <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 p-6">

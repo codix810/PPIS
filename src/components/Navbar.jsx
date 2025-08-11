@@ -10,9 +10,10 @@ import {
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const navigation = [
-  { name: 'News', href: '/News' },  
-  { name: 'Activities', href: '/Activities' },
+  { name: 'Home', href: '/' },  
   { name: 'Instructors', href: '/TeachersList' },
+  { name: 'News', href: '/News' },  
+  { name: 'Activities', href: '/activities' },
   { name: 'Students', href: '/Student' },
   { name: 'About', href: '/About' },
 ];
@@ -49,13 +50,14 @@ export default function Navbar() {
                     <Link
                       key={item.name}
                       href={item.href}
-                      className={`px-3 py-2 rounded-md text-sm font-medium transition duration-200 ${
+                      className={`px- py-2 rounded-md text-sm font-medium transition duration-200 ${
                         isActive
                           ? 'text-red-500 font-semibold'
                           : 'text-white hover:text-red-400'
                       }`}
                     >
-                      {item.name}
+                      {item.name} <span>|</span>
+                      
                     </Link>
                   );
                 })}
