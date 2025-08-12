@@ -12,7 +12,7 @@ export default function Home() {
         
         {/* Text Content */}
         <div className="flex flex-col items-center md:items-start text-center md:text-left">
-          <h1 className="text-4xl text-center sm:text-4xl md:text-5xl max-w-[500px] font-bold mb-4">
+          <h1 className="text-3xl text-center sm:text-4xl md:text-5xl max-w-[550px] font-bold mb-4">
             <span className="text-red-700">Public</span> Policy Information{" "}
             <span className="text-blue-700">Systems</span>
           </h1>

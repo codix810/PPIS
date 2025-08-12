@@ -15,7 +15,7 @@ const navigation = [
   { name: 'News', href: '/News' },  
   { name: 'Activities', href: '/activities' },
   { name: 'Students', href: '/Student' },
-  { name: 'About', href: '/About' },
+  { name: 'About', href: '/about' },
 ];
 
 export default function Navbar() {

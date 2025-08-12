@@ -12,7 +12,7 @@ const Card = () => {
       title: "Programs",
       desc: "Types of corporate programs",
       bg: "bg-gradient-to-tr from-blue-700 via-blue-800 to-blue-200",
-      link: "/programs",
+      link: "/subjects",
     },
     {
       icon: <FaUsers className="text-4xl text-green-200" />,
@@ -33,7 +33,7 @@ const Card = () => {
       title: "Faculty",
       desc: "Meet our professionals",
       bg: "bg-gradient-to-tr from-red-700 via-red-800 to-red-00",
-      link: "/faculty",
+      link: "/about",
 
     },
   ];
