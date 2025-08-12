@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaPlusCircle, FaSignOutAlt, FaUsers, FaChalkboardTeacher, FaNewspaper } from 'react-icons/fa';
+import Link from 'next/link';
 
 export default function DashboardLayout({
   children,
@@ -21,7 +22,7 @@ export default function DashboardLayout({
     } else {
       setUsername(storedUsername || 'Admin');
     }
-  }, []);
+  }, [router]);
 
   const handleLogout = () => {
     localStorage.removeItem('isLoggedIn');
@@ -34,7 +35,9 @@ export default function DashboardLayout({
       {/* Navbar */}
       <nav className="bg-white shadow-md px-4 py-3 md:px-6">
         <div className="flex justify-between items-center">
-          <a href="/dashboard" className="font-bold text-indigo-700 text-xl tracking-wide"></a>
+          <Link href="/dashboard" className="font-bold text-indigo-700 text-xl tracking-wide">
+            Dashboard
+          </Link>
 
           <button
             className="md:hidden text-gray-600 text-2xl"
@@ -51,61 +54,54 @@ export default function DashboardLayout({
             menuOpen ? 'flex' : 'hidden'
           } flex-col md:flex md:flex-row md:items-center md:justify-between md:gap-6 mt-4 md:mt-0 w-full transition-all`}
         >
-          {/* عرض الأخبار */}
-          <a
+          <Link
             href="/dashboard/ViewNews"
             className="flex items-center gap-2 justify-center text-indigo-600 hover:bg-indigo-100 px-4 py-2 rounded-md transition duration-200"
           >
             <FaNewspaper />
             <span>View News</span>
-          </a>
+          </Link>
 
-          {/* إضافة خبر */}
-          <a
+          <Link
             href="/dashboard/AddNews"
             className="flex items-center gap-2 justify-center text-blue-600 hover:bg-blue-100 px-4 py-2 rounded-md transition duration-200"
           >
             <FaPlusCircle />
             <span>Add News</span>
-          </a>
+          </Link>
 
-          {/* عرض الطلاب */}
-          <a
+          <Link
             href="/dashboard/ViewStudent"
             className="flex items-center gap-2 justify-center text-purple-600 hover:bg-purple-100 px-4 py-2 rounded-md transition duration-200"
           >
             <FaUsers />
             <span>View Students</span>
-          </a>
+          </Link>
 
-          {/* إضافة طالب */}
-          <a
+          <Link
             href="/dashboard/AddStudent"
             className="flex items-center gap-2 justify-center text-purple-700 hover:bg-purple-200 px-4 py-2 rounded-md transition duration-200"
           >
             <FaPlusCircle />
             <span>Add Student</span>
-          </a>
+          </Link>
 
-          {/* عرض المعلمين */}
-          <a
+          <Link
             href="/dashboard/ViewTeacher"
             className="flex items-center gap-2 justify-center text-green-600 hover:bg-green-100 px-4 py-2 rounded-md transition duration-200"
           >
             <FaChalkboardTeacher />
             <span>View Teachers</span>
-          </a>
+          </Link>
 
-          {/* إضافة معلم */}
-          <a
+          <Link
             href="/dashboard/AddTeacher"
             className="flex items-center gap-2 justify-center text-green-700 hover:bg-green-200 px-4 py-2 rounded-md transition duration-200"
           >
             <FaPlusCircle />
             <span>Add Teacher</span>
-          </a>
+          </Link>
 
-          {/* Logout */}
           <button
             onClick={handleLogout}
             className="flex items-center gap-2 justify-center text-red-500 hover:bg-red-100 px-4 py-2 rounded-md transition duration-200"
