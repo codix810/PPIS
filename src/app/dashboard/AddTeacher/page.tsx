@@ -69,11 +69,14 @@ export default function AddTeacherPage() {
       // Hide message after 4s
       setTimeout(() => setSuccessMessage(null), 4000);
 
-    } catch (err: any) {
-      alert(err.message);
-    } finally {
-      setLoading(false);
-    }
+    }  catch (err: unknown) {
+  if (err instanceof Error) {
+    alert(err.message);
+  } else {
+    alert('An unexpected error occurred.');
+  }
+}
+
   };
 
   return (
