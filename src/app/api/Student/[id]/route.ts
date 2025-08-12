@@ -4,8 +4,12 @@ import Student from '../../../../../models/TopStudent';
 
 import { NextRequest } from 'next/server';
 
-export async function GET(request: NextRequest, context: { params: { id: string } }) {
-  const { id } = context.params;
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const { id } = params;
+
   try {
     await connectDB();
     const student = await Student.findById(id).lean();
