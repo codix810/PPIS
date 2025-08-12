@@ -1,32 +1,42 @@
-import { NextResponse } from 'next/server';
-import { connectDB } from '../../../../../lid/db'; // عدل حسب مسار اتصال الداتا بيز عندك
+import { NextResponse, NextRequest } from 'next/server';
+import { connectDB } from '../../../../../lid/db';
 import Student from '../../../../../models/TopStudent';
+import { v2 as cloudinary } from 'cloudinary';
 
-import { NextRequest } from 'next/server';
+// إعداد Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
+  api_key: process.env.CLOUDINARY_API_KEY!,
+  api_secret: process.env.CLOUDINARY_API_SECRET!,
+});
 
+// ===== GET طالب =====
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const { id } = params;
-
   try {
     await connectDB();
-    const student = await Student.findById(id).lean();
+    const student = await Student.findById(params.id).lean();
+
     if (!student) {
       return NextResponse.json({ message: 'Student not found' }, { status: 404 });
     }
+
     return NextResponse.json({ student }, { status: 200 });
   } catch (error) {
-    console.error(error);
+    console.error('GET student error:', error);
     return NextResponse.json({ message: 'Failed to fetch student' }, { status: 500 });
   }
 }
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+// ===== تحديث طالب =====
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
-    const body = await request.json();
-    const { name, description, imageUrl } = body;
+    const { name, description, imageUrl } = await request.json();
 
     if (!name || !description || !imageUrl) {
       return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
@@ -44,27 +54,25 @@ export async function PUT(request: Request, { params }: { params: { id: string }
       return NextResponse.json({ message: 'Student not found' }, { status: 404 });
     }
 
-    return NextResponse.json({ message: 'Student updated', student: updatedStudent }, { status: 200 });
+    return NextResponse.json(
+      { message: 'Student updated', student: updatedStudent },
+      { status: 200 }
+    );
   } catch (error) {
-    console.error(error);
+    console.error('PUT student error:', error);
     return NextResponse.json({ message: 'Failed to update student' }, { status: 500 });
   }
 }
 
-import { v2 as cloudinary } from 'cloudinary';
-
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
-  api_key: process.env.CLOUDINARY_API_KEY!,
-  api_secret: process.env.CLOUDINARY_API_SECRET!,
-});
-
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+// ===== حذف طالب =====
+export async function DELETE(
+  _request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     await connectDB();
 
     const student = await Student.findById(params.id);
-
     if (!student) {
       return NextResponse.json({ message: 'Student not found' }, { status: 404 });
     }
@@ -72,13 +80,9 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
     // استخراج public_id من رابط الصورة
     const imageUrl = student.imageUrl;
     const urlParts = imageUrl.split('/');
-    // حذف الجزء قبل upload/ وأخذ باقي المسار
     const uploadIndex = urlParts.findIndex(part => part === 'upload');
     const publicPathParts = urlParts.slice(uploadIndex + 1);
-    // publicPathParts قد يكون مثل: ['v1687283345', 'ppis-top-students', 'abc123.jpg']
-    // نحذف الجزء اللي يبدأ بـ v لأن Cloudinary لا يحتاجه
     const filteredParts = publicPathParts.filter(part => !part.startsWith('v'));
-    // نحذف الامتداد
     const fileName = filteredParts.pop()!;
     const publicId = [...filteredParts, fileName.split('.').slice(0, -1).join('.')].join('/');
 
@@ -90,7 +94,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
 
     return NextResponse.json({ message: 'Student and image deleted' }, { status: 200 });
   } catch (error) {
-    console.error('Delete student error:', error);
+    console.error('DELETE student error:', error);
     return NextResponse.json({ message: 'Failed to delete student' }, { status: 500 });
   }
 }
