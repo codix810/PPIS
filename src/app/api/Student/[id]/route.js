@@ -1,20 +1,16 @@
-import { NextResponse, NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { connectDB } from '../../../../../lid/db';
 import Student from '../../../../../models/TopStudent';
 import { v2 as cloudinary } from 'cloudinary';
 
-// إعداد Cloudinary
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
-  api_key: process.env.CLOUDINARY_API_KEY!,
-  api_secret: process.env.CLOUDINARY_API_SECRET!,
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 // ===== GET طالب =====
-export async function GET(
-  _request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(_request, { params }) {
   try {
     await connectDB();
     const student = await Student.findById(params.id).lean();
@@ -31,10 +27,7 @@ export async function GET(
 }
 
 // ===== تحديث طالب =====
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request, { params }) {
   try {
     const { name, description, imageUrl } = await request.json();
 
@@ -65,10 +58,7 @@ export async function PUT(
 }
 
 // ===== حذف طالب =====
-export async function DELETE(
-  _request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(_request, { params }) {
   try {
     await connectDB();
 
@@ -77,19 +67,15 @@ export async function DELETE(
       return NextResponse.json({ message: 'Student not found' }, { status: 404 });
     }
 
-    // استخراج public_id من رابط الصورة
     const imageUrl = student.imageUrl;
     const urlParts = imageUrl.split('/');
     const uploadIndex = urlParts.findIndex(part => part === 'upload');
     const publicPathParts = urlParts.slice(uploadIndex + 1);
     const filteredParts = publicPathParts.filter(part => !part.startsWith('v'));
-    const fileName = filteredParts.pop()!;
+    const fileName = filteredParts.pop();
     const publicId = [...filteredParts, fileName.split('.').slice(0, -1).join('.')].join('/');
 
-    // حذف الصورة من Cloudinary
     await cloudinary.uploader.destroy(publicId);
-
-    // حذف الطالب من قاعدة البيانات
     await Student.findByIdAndDelete(params.id);
 
     return NextResponse.json({ message: 'Student and image deleted' }, { status: 200 });
