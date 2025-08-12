@@ -5,9 +5,9 @@ import { v2 as cloudinary } from 'cloudinary';
 
 // إعداد Cloudinary
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
-  api_key: process.env.CLOUDINARY_API_KEY!,
-  api_secret: process.env.CLOUDINARY_API_SECRET!,
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 export async function GET(req, { params }) {
@@ -19,10 +19,7 @@ export async function GET(req, { params }) {
   return NextResponse.json({ teacher });
 }
 
-export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request, { params }) {
   try {
     const { name, specialty, imageUrl, description } = await request.json();
 
@@ -48,10 +45,7 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request, { params }) {
   try {
     await connectDB();
     const teacher = await Teacher.findById(params.id);
@@ -66,7 +60,7 @@ export async function DELETE(
     const uploadIndex = urlParts.findIndex(part => part === 'upload');
     const publicPathParts = urlParts.slice(uploadIndex + 1);
     const filteredParts = publicPathParts.filter(part => !part.startsWith('v'));
-    const fileName = filteredParts.pop()!;
+    const fileName = filteredParts.pop();
     const publicId = [...filteredParts, fileName.split('.').slice(0, -1).join('.')].join('/');
 
     // حذف الصورة من Cloudinary
