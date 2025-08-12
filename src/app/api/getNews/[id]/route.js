@@ -5,16 +5,16 @@ import { v2 as cloudinary } from 'cloudinary';
 
 // إعداد Cloudinary
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
-  api_key: process.env.CLOUDINARY_API_KEY!,
-  api_secret: process.env.CLOUDINARY_API_SECRET!,
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 // 🟢 GET خبر واحد
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request, context) {
   try {
     await connectDB();
-    const news = await News.findById(params.id).lean();
+    const news = await News.findById(context.params.id).lean();
     if (!news) {
       return NextResponse.json({ message: 'News not found' }, { status: 404 });
     }
@@ -26,11 +26,11 @@ export async function GET(request: Request, { params }: { params: { id: string }
 }
 
 // 🟡 PUT تعديل خبر
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(req, context) {
   try {
     await connectDB();
     const body = await req.json();
-    const updatedNews = await News.findByIdAndUpdate(params.id, body, { new: true });
+    const updatedNews = await News.findByIdAndUpdate(context.params.id, body, { new: true });
     return NextResponse.json(updatedNews);
   } catch (error) {
     return NextResponse.json({ message: 'Error updating news' }, { status: 500 });
@@ -38,11 +38,11 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 }
 
 // 🔴 DELETE حذف خبر + صورة
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request, context) {
   try {
     await connectDB();
 
-    const news = await News.findById(params.id);
+    const news = await News.findById(context.params.id);
     if (!news) {
       return NextResponse.json({ message: 'News not found' }, { status: 404 });
     }
@@ -53,14 +53,14 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
     const uploadIndex = urlParts.findIndex(part => part === 'upload');
     const publicPathParts = urlParts.slice(uploadIndex + 1);
     const filteredParts = publicPathParts.filter(part => !part.startsWith('v'));
-    const fileName = filteredParts.pop()!;
+    const fileName = filteredParts.pop();
     const publicId = [...filteredParts, fileName.split('.').slice(0, -1).join('.')].join('/');
 
     // حذف الصورة من Cloudinary
     await cloudinary.uploader.destroy(publicId);
 
     // حذف الخبر من قاعدة البيانات
-    await News.findByIdAndDelete(params.id);
+    await News.findByIdAndDelete(context.params.id);
 
     return NextResponse.json({ message: 'News and image deleted' }, { status: 200 });
   } catch (error) {

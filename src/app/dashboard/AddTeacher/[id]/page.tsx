@@ -43,11 +43,14 @@ export default function EditTeacherPage() {
         } else {
           setTeacher((prev) => ({ ...prev, ...t }));
         }
-      } catch (err: any) {
-        setError(err.message || 'Error fetching data.');
-      } finally {
-        setLoading(false);
-      }
+    } catch (err: unknown) {
+  if (err instanceof Error) {
+    setError(err.message || 'Error fetching data.');
+  } else {
+    setError('Error fetching data.');
+  }
+}
+
     };
 
     fetchTeacher();
@@ -68,9 +71,14 @@ export default function EditTeacherPage() {
       }
 
       router.push('/dashboard/ViewTeacher');
-    } catch (err: any) {
-      setError(err.message || 'Update failed.');
-    }
+  } catch (err: unknown) {
+  if (err instanceof Error) {
+    setError(err.message || 'Update failed.');
+  } else {
+    setError('Update failed.');
+  }
+}
+
   };
 
   if (loading)

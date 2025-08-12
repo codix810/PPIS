@@ -1,13 +1,16 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextRequest } from 'next/server';
 import { connectDB } from '../../../../lid/db';
 import News from '../../../../models/News';
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(req: NextRequest) {
   try {
     const { title, content, date, notes, imageUrl } = await req.json();
 
     if (!title || !content || !date || !imageUrl) {
-      return res.status(400).json({ message: 'Missing required fields' });
+      return new Response(JSON.stringify({ message: 'Missing required fields' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     await connectDB();
