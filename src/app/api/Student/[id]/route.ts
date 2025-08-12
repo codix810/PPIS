@@ -2,10 +2,13 @@ import { NextResponse } from 'next/server';
 import { connectDB } from '../../../../../lid/db'; // عدل حسب مسار اتصال الداتا بيز عندك
 import Student from '../../../../../models/TopStudent';
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+import { NextRequest } from 'next/server';
+
+export async function GET(request: NextRequest, context: { params: { id: string } }) {
+  const { id } = context.params;
   try {
     await connectDB();
-    const student = await Student.findById(params.id).lean();
+    const student = await Student.findById(id).lean();
     if (!student) {
       return NextResponse.json({ message: 'Student not found' }, { status: 404 });
     }
