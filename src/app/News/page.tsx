@@ -12,7 +12,7 @@ type NewsItem = {
 };
 
 const colors = {
-  pageBg: '#F8FAFC',
+  pageBg: '#000000ff',
   cardBg: '#FFFFFF',
   titleColor: '#1E293B',
   textColor: '#475569',

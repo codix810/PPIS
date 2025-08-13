@@ -1,5 +1,6 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 type TopStudent = {
@@ -18,7 +19,7 @@ export default function TopStudentsList() {
       try {
         const res = await fetch('/api/Student');
         const data = await res.json();
-        setStudents(data.students);
+        setStudents(data.students || []);
       } catch (error) {
         console.error('Failed to fetch students', error);
       } finally {
@@ -29,70 +30,65 @@ export default function TopStudentsList() {
     fetchStudents();
   }, []);
 
-  if (loading)
+  if (loading) {
     return (
-      <div className="flex justify-center bg-black  items-center h-screen">
-        {/* 3 نقاط حمراء متحركة */}
+      <div className="flex justify-center bg-black items-center h-screen">
         <div className="flex space-x-2">
           {[...Array(3)].map((_, i) => (
             <span
               key={i}
-              className="w-4 h-4 bg-red-600  rounded-full animate-bounce"
+              className="w-4 h-4 bg-red-600 rounded-full animate-bounce"
               style={{ animationDelay: `${i * 0.2}s` }}
             />
           ))}
         </div>
       </div>
     );
+  }
 
   if (students.length === 0) {
-    return <p className="text-center text-red-500">No top students found.</p>;
+    return (
+      <p className="text-center mt-20 text-red-500">
+        No top students found.
+      </p>
+    );
   }
 
   return (
-    <>
-        <div className=" py-6 px-6 md:px-12 items-start  ">
-          <h1 className="text-4xl font-bold mt-5 mb-2 text-start" style={{ color:"red" }}
-          >|Students      </h1></div>
-    <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 p-6">
-      {students.map(({ _id, name, description, imageUrl }) => (
-        <div
-          key={_id}
-          className="relative bg-white shadow-md p-2 flex flex-col items-center text-center"
-          style={{
-            borderTopLeftRadius: '100% 70px', 
-            borderTopRightRadius: '100% 70px',
-            borderBottomLeftRadius: '12px',
-            borderBottomRightRadius: '12px',
-            overflow: 'visible',
-            marginTop: 60, 
-          }}
+    <section className="py-16 bg-gradient-to-tr from-red-950 via-black to-blue-950">
+      <div className="container mx-auto px-6 text-center">
+        <motion.h2
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          className="text-3xl text-white font-bold mb-10"
         >
-          
-          {/* الصورة فوق القبة */}
-          <div
-            className="relative rounded-full border-4 border-red-600 overflow-hidden shadow-lg"
-            style={{
-              width: 140,
-              height: 140,
-              marginTop: -60, 
-              zIndex: 10,
-              backgroundColor: '#a20000ff',
-            }}
-          >
-            <img
-              src={imageUrl}
-              alt={name}
-              className="w-full h-full object-cover rounded-full"
-              loading="lazy"
-            />
-          </div>
+          Students
+        </motion.h2>
 
-          <h3 className="mt-8 text-2xl font-semibold z-10">{name}</h3>
-          <p className="text-gray-600 text-sm mt-2 z-10">{description}</p>
+        <div className="grid md:grid-cols-3 gap-8">
+          {students.map((student, i) => (
+            <motion.div
+              key={student._id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: i * 0.2 }}
+              className="bg-gray-900 shadow-lg p-6 rounded-xl hover:shadow-2xl transition"
+            >
+              <img
+                src={student.imageUrl}
+                alt={student.name}
+                className="rounded-full mx-auto mb-4 object-cover"
+                width={200}
+                height={200}
+                loading="lazy"
+              />
+              <h3 className="text-xl font-semibold text-white">{student.name}</h3>
+              <p className="text-gray-400">{student.description}</p>
+            </motion.div>
+          ))}
         </div>
-      ))}
-    </div>
-    </>
+      </div>
+    </section>
   );
 }
