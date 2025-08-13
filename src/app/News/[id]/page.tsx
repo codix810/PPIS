@@ -62,39 +62,41 @@ export default function NewsDetail({ params }: PageProps) {
     : '';
 
   return (
-    <div
-      className="max-w-4xl mx-auto p-6 font-sans"
-      style={{ fontFamily: "'Poppins', sans-serif" }}>
-        <h1 className="text-4xl font-bold mb-14 items-start text-start"style={{ color:"#ef1717ff", }}>|News</h1>
-      <img
-        src={newsItem.imageUrl}
-        alt={newsItem.title}
-        className="w-full h-[380px] object-cover rounded-md mb-6"
-      />
+    <div className='bg-gradient-to-tr from-red-950 via-black to-blue-950'>
+      <div
+        className="max-w-4xl  mx-auto p-6 font-sans"
+        style={{ fontFamily: "'Poppins', sans-serif" }}>
+          <h1 className="text-4xl font-bold mb-14 items-start text-start"style={{ color:"#ef1717ff", }}>|News</h1>
+        <img
+          src={newsItem.imageUrl}
+          alt={newsItem.title}
+          className="w-full h-[380px] object-cover rounded-md mb-6"
+        />
 
-      <h1 className="text-4xl font-bold mb-4 text-gray-900">{newsItem.title}</h1>
+        <h1 className="text-4xl font-bold mb-4 text-white">{newsItem.title}</h1>
 
-      <p className="text-lg leading-relaxed text-gray-700 whitespace-pre-line mb-6">
-        {newsItem.content}
-      </p>
+        <p className="text-lg leading-relaxed text-white whitespace-pre-line mb-6">
+          {newsItem.content}
+        </p>
 
-      {/* خط أحمر صغير */}
-      <hr className="border-red-600 border-1 mb-8 w-35 mx-auto" />
+        {/* خط أحمر صغير */}
+        <hr className="border-red-600 border-1 mb-8 w-35 mx-auto" />
 
-      {/* النوت */}
-      {newsItem.notes && (
-        <p className="text-md text-gray-600 italic mb-8">{newsItem.notes}</p>
-      )}
+        {/* النوت */}
+        {newsItem.notes && (
+          <p className="text-md text-white italic mb-8">{newsItem.notes}</p>
+        )}
 
-      <div className="flex justify-between items-center">
-        <button
-          onClick={() => router.back()}
-          className="bg-red-600 text-white px-5 py-2 rounded-md hover:bg-Back-700 transition"
-        >
-          Back
-        </button>
+        <div className="flex justify-between items-center">
+          <button
+            onClick={() => router.back()}
+            className="bg-red-600 text-white px-5 py-2 rounded-md hover:bg-Back-700 transition"
+          >
+            Back
+          </button>
 
-        <span className="text-gray-500 text-sm">{createdAt}</span>
+          <span className="text-white text-sm">{createdAt}</span>
+        </div>
       </div>
     </div>
   );

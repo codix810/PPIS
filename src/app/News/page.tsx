@@ -14,8 +14,10 @@ type NewsItem = {
 const colors = {
   pageBg: '#000000ff',
   cardBg: '#FFFFFF',
-  titleColor: '#1E293B',
-  textColor: '#475569',
+  titleColor: '#ffff',
+  textColor: '#ffff',
+  // titleColor: '#1E293B',
+  // textColor: '#475569',
   buttonBg: '#ef1717ff',
   buttonHoverBg: '#7F1D1D',
   shadow: 'rgba(30, 64, 175, 0.15)',
@@ -57,7 +59,7 @@ useEffect(() => {
 
   return (
     <div
-      className="min-h-screen py-16 px-6 md:px-12 flex flex-col items-start"
+      className="min-h-screen bg-gradient-to-tr from-red-950 via-black to-blue-950 py-16 px-6 md:px-12 flex flex-col items-start"
       style={{ backgroundColor: colors.pageBg, fontFamily: "'Poppins', sans-serif" }}
     >
       <h1
@@ -74,7 +76,7 @@ useEffect(() => {
         {news.slice(0, 6).map(({ _id, title, content, imageUrl }, idx) => (
           <motion.div
             key={_id}
-            className="flex flex-col bg-white rounded-lg shadow-md overflow-hidden cursor-pointer"
+            className="flex flex-col bg-gray-900 rounded-lg shadow-md overflow-hidden cursor-pointer"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.1, duration: 0.5, ease: 'easeOut' }}
@@ -99,7 +101,7 @@ useEffect(() => {
               </h2>
 
               <p
-                className="text-gray-700 mb-6 flex-grow"
+                className="text-white mb-6 flex-grow"
                 style={{ color: colors.textColor, fontSize: '0.95rem', lineHeight: '1.4' }}
                 title={content}
               >

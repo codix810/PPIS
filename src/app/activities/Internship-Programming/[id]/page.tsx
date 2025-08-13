@@ -64,31 +64,33 @@ export default function IntProDetail({ params }: PageProps) {
     : '';
 
   return (
-    <div className="max-w-4xl mx-auto p-6 font-sans" style={{ fontFamily: "'Poppins', sans-serif" }}>
-      <h1 className="text-4xl font-bold mb-14 text-start" style={{ color:"#ef1717ff" }}>|Internship-Programming</h1>
-      
-      <img
-        src={intProItem.imageUrl}
-        alt={intProItem.title}
-        className="w-full h-[380px] object-cover rounded-md mb-6"
-      />
+    <div className='bg-gradient-to-tr from-red-950 via-black to-blue-950'>
+      <div className="max-w-4xl mx-auto p-6 font-sans" style={{ fontFamily: "'Poppins', sans-serif" }}>
+        <h1 className="text-4xl font-bold mb-14 text-start" style={{ color:"#ef1717ff" }}>|Internship-Programming</h1>
+        
+        <img
+          src={intProItem.imageUrl}
+          alt={intProItem.title}
+          className="w-full h-[380px] object-cover rounded-md mb-6"
+        />
 
-      <h1 className="text-4xl font-bold mb-4 text-gray-900">{intProItem.title}</h1>
+        <h1 className="text-4xl font-bold mb-4 text-white">{intProItem.title}</h1>
 
-      <p className="text-lg leading-relaxed text-gray-700 whitespace-pre-line mb-6">
-        {intProItem.content}
-      </p>
+        <p className="text-lg leading-relaxed text-white whitespace-pre-line mb-6">
+          {intProItem.content}
+        </p>
 
-      <hr className="border-red-600 border-1 mb-8 w-35 mx-auto" />
+        <hr className="border-red-600 border-1 mb-8 w-35 mx-auto" />
 
-      <div className="flex justify-between items-center">
-        <button
-          onClick={() => router.back()}
-          className="bg-red-600 text-white px-5 py-2 rounded-md hover:bg-red-700 transition"
-        >
-          Back
-        </button>
-        <span className="text-gray-500 text-sm">{createdAt}</span>
+        <div className="flex justify-between items-center">
+          <button
+            onClick={() => router.back()}
+            className="bg-red-600 text-white px-5 py-2 rounded-md hover:bg-red-700 transition"
+          >
+            Back
+          </button>
+          <span className="text-white text-sm">{createdAt}</span>
+        </div>
       </div>
     </div>
   );
