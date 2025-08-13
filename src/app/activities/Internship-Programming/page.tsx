@@ -16,7 +16,6 @@ export default function Page() {
   const [intPro, setIntPro] = useState<IntPro[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // دالة تقطع النص عند 100 كلمة
   const truncateWords = (text: string, wordLimit: number) => {
     const words = text.split(/\s+/);
     return words.length > wordLimit
@@ -71,7 +70,7 @@ export default function Page() {
         transition={{ duration: 0.6 }}
         className="text-4xl font-bold text-center mb-12"
       >
-          Internship Programming
+        Internship Programming
       </motion.h1>
 
       <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -98,7 +97,6 @@ export default function Page() {
           );
 
           return (
-          <Link href={`/activities/Internship-Programming/${item._id}`}>
             <motion.div
               key={item._id}
               initial={{ opacity: 0, y: 90 }}
@@ -106,15 +104,13 @@ export default function Page() {
               transition={{ duration: 0.5, delay: index * 0.15 }}
               className="bg-white/10 rounded-xl shadow-lg overflow-hidden border border-white/10 hover:bg-white/20 transition"
             >
-              {hasLink ? (
-                <Link href={item.link!} target="_blank">
-                  {CardContent}
-                </Link>
-              ) : (
-                CardContent
-              )}
+              <Link
+                href={hasLink ? item.link! : `/activities/Internship-Programming/${item._id}`}
+                target={hasLink ? "_blank" : "_self"}
+              >
+                {CardContent}
+              </Link>
             </motion.div>
-          </Link>
           );
         })}
       </div>
