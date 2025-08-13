@@ -76,48 +76,47 @@ export default function Page() {
       </motion.h1>
 
       <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        {event.map((item, index) => {
-          const hasLink = item.link && item.link.trim() !== "";
+{event.map((item, index) => {
+  const hasLink = item.link && item.link.trim() !== "";
 
-          const CardContent = (
-            <>
-              <img
-                src={item.imageUrl}
-                alt={item.title}
-                className="w-full h-48 object-cover"
-                loading="lazy"
-              />
-              <div className="p-4">
-                <h3 className="text-xl font-semibold mb-1">
-                  {truncateWords(item.content, 4)}
-                </h3>
-                <p className="text-gray-300 text-sm">
-                  {truncateWords(item.content, 50)}
-                </p>
-              </div>
-            </>
-          );
+  const CardContent = (
+    <>
+      <img
+        src={item.imageUrl}
+        alt={item.title}
+        className="w-full h-48 object-cover"
+        loading="lazy"
+      />
+      <div className="p-4">
+        <h3 className="text-xl font-semibold mb-1">
+          {truncateWords(item.content, 4)}
+        </h3>
+        <p className="text-gray-300 text-sm">
+          {truncateWords(item.content, 50)}
+        </p>
+      </div>
+    </>
+  );
 
-          return (
-        <Link href={`/activities/College-Events/${item._id}`}>
-            <motion.div
-              key={item._id}
-              initial={{ opacity: 0, y: 90 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.15 }}
-              className="bg-white/10 rounded-xl shadow-lg overflow-hidden border border-white/10 hover:bg-white/20 transition"
-            >
-              {hasLink ? (
-                <Link href={item.link!} target="_blank">
-                  {CardContent}
-                </Link>
-              ) : (
-                CardContent
-              )}
-            </motion.div>
-            </Link>
-          );
-        })}
+  return (
+    <Link key={item._id} href={`/activities/College-Events/${item._id}`}>
+      <motion.div
+        initial={{ opacity: 0, y: 90 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: index * 0.15 }}
+        className="bg-white/10 rounded-xl shadow-lg overflow-hidden border border-white/10 hover:bg-white/20 transition"
+      >
+        {hasLink ? (
+          <Link href={item.link!} target="_blank">
+            {CardContent}
+          </Link>
+        ) : (
+          CardContent
+        )}
+      </motion.div>
+    </Link>
+  );
+})}
       </div>
     </div>
   );
