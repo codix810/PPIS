@@ -45,7 +45,7 @@ const Subjects = () => {
             <Link href={subject.link} >
             <h3 className="text-xl font-bold mt-4">{subject.title}</h3>
             <p className="text-white mt-2">{subject.desc}</p>
-            <button className="mt-4 px-4 py-2 rounded-lg text-white bg-gradient-to-tr from-red-900  to-blue-950 hover:opacity-90 transition-opacity">
+            <button className="mt-4 px-4 py-2 rounded-lg cursor-pointer text-white bg-gradient-to-tr from-red-900  to-blue-950 hover:opacity-90 transition-opacity">
               Learn More
             </button>
             </Link>

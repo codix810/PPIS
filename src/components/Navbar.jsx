@@ -30,11 +30,13 @@ export default function Navbar() {
               
               {/* Logo on the left */}
               <div className="flex items-center space-x-2">
-                <img
-                  src="/ppis.jpg"
-                  alt="ppis"
-                  className="w-10 h-10 rounded-full"
-                />
+                <Link href="/">
+                  <img
+                    src="/ppis.jpg"
+                    alt="ppis"
+                    className="w-10 h-10 rounded-full cursor-pointer"
+                  />
+                </Link>
                 <Link
                   href="/"
                   className="text-3xl font-bold text-white tracking-wide hover:text-red-500 transition-colors duration-200"
