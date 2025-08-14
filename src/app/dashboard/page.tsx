@@ -24,9 +24,9 @@ export default function DashboardPage() {
         className="text-center"
       >
         <div className="flex justify-center mb-4">
-          <FaChartLine className="text-indigo-600 text-6xl" />
+          <FaChartLine className="text-red-600 text-6xl" />
         </div>
-        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-800 flex items-center justify-center gap-2">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-red-800 flex items-center justify-center gap-2">
           أهلاً بك في لوحة التحكم
           <FaSmileWink className="text-yellow-500" />
         </h1>
