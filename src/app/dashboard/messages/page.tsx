@@ -16,7 +16,10 @@ export default function MessagesPage() {
   const [q, setQ] = useState("");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [statusMsg, setStatusMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<Message | null>(null);
 
+  // جلب البيانات
   useEffect(() => {
     fetch("/api/contact")
       .then((r) => r.json())
@@ -27,6 +30,7 @@ export default function MessagesPage() {
       .catch(() => setLoading(false));
   }, []);
 
+  // البحث
   const filtered = useMemo(() => {
     const query = q.trim().toLowerCase();
     if (!query) return messages;
@@ -37,28 +41,36 @@ export default function MessagesPage() {
     );
   }, [messages, q]);
 
+  // الصفحات
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const currentPage = Math.min(page, totalPages);
   const pageStart = (currentPage - 1) * pageSize;
   const pageItems = filtered.slice(pageStart, pageStart + pageSize);
 
   useEffect(() => {
-    // لما تغيّر نتيجة الفلترة ارجع لأول صفحة
     setPage(1);
   }, [q, pageSize]);
 
-  const deleteMessage = async (id: string) => {
-    if (!confirm("Delete this message?")) return;
+  // تأكيد الحذف
+  const confirmDelete = (message: Message) => {
+    setDeleteTarget(message);
+  };
+
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
     const res = await fetch("/api/contact", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
+      body: JSON.stringify({ id: deleteTarget._id }),
     });
     if (res.ok) {
-      setMessages((prev) => prev.filter((m) => m._id !== id));
+      setMessages((prev) => prev.filter((m) => m._id !== deleteTarget._id));
+      setStatusMsg({ type: "success", text: "تم حذف الرسالة بنجاح ✅" });
     } else {
-      alert("Failed to delete message");
+      setStatusMsg({ type: "error", text: "فشل حذف الرسالة ❌" });
     }
+    setDeleteTarget(null);
+    setTimeout(() => setStatusMsg(null), 3000);
   };
 
   if (loading) {
@@ -80,165 +92,155 @@ export default function MessagesPage() {
   return (
     <div className="bg-black min-h-screen text-white">
       <div className="mx-auto w-full max-w-screen-xl px-3 sm:px-6 py-6">
-        {/* Header + Controls */}
-        <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <h1 className="text-xl sm:text-2xl font-bold">Contact Messages</h1>
 
-          <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
-            <input
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-              placeholder="Search name / email / text…"
-              className="w-full sm:w-72 rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-red-600"
-            />
+        {/* رسالة النجاح/الخطأ */}
+        {statusMsg && (
+          <div
+            className={`mb-4 rounded-lg p-3 text-sm ${
+              statusMsg.type === "success"
+                ? "bg-green-600 text-white"
+                : "bg-red-600 text-white"
+            }`}
+          >
+            {statusMsg.text}
+          </div>
+        )}
+
+        {/* مودال تأكيد الحذف */}
+        {deleteTarget && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black/70 z-50">
+            <div className="bg-gray-900 rounded-lg p-6 max-w-sm w-full shadow-lg border border-gray-700">
+              <h2 className="text-lg font-bold mb-3">تأكيد الحذف</h2>
+              <p className="text-sm text-gray-300 mb-6">
+                هل أنت متأكد أنك تريد حذف الرسالة من{" "}
+                <span className="text-red-400">{deleteTarget.name}</span>؟
+              </p>
+              <div className="flex justify-end gap-2">
+                <button
+                  onClick={() => setDeleteTarget(null)}
+                  className="px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600"
+                >
+                  إلغاء
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="px-4 py-2 rounded-md bg-red-600 hover:bg-red-700"
+                >
+                  حذف
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* العنوان والبحث */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+          <h1 className="text-2xl font-bold">Contact Messages</h1>
+          <input
+            type="text"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="ابحث..."
+            className="px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 text-white w-full sm:w-64"
+          />
+        </div>
+
+        {/* عرض جدول على الشاشات الكبيرة وكروت على الصغيرة */}
+        <div className="hidden md:block">
+          <table className="w-full border border-gray-700">
+            <thead className="bg-gray-800">
+              <tr>
+                <th className="p-2 text-left">Name</th>
+                <th className="p-2 text-left">Email</th>
+                <th className="p-2 text-left">Message</th>
+                <th className="p-2 text-left">Date</th>
+                <th className="p-2 text-left">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {pageItems.map((m) => (
+                <tr key={m._id} className="border-t border-gray-700">
+                  <td className="p-2">{m.name}</td>
+                  <td className="p-2">{m.email}</td>
+                  <td className="p-2">{m.message}</td>
+                  <td className="p-2">
+                    {new Date(m.createdAt).toLocaleString()}
+                  </td>
+                  <td className="p-2">
+                    <button
+                      onClick={() => confirmDelete(m)}
+                      className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded-lg"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* كروت للموبايل */}
+        <div className="md:hidden space-y-4">
+          {pageItems.map((m) => (
+            <div
+              key={m._id}
+              className="bg-gray-900 p-4 rounded-lg shadow-md border border-gray-700"
+            >
+              <p className="font-semibold">
+                {m.name} ({m.email})
+              </p>
+              <p className="text-sm text-gray-400">
+                {new Date(m.createdAt).toLocaleString()}
+              </p>
+              <p className="mt-2">{m.message}</p>
+              <button
+                onClick={() => confirmDelete(m)}
+                className="mt-3 bg-red-600 hover:bg-red-700 px-3 py-1 rounded-lg"
+              >
+                Delete
+              </button>
+            </div>
+          ))}
+        </div>
+
+        {/* الصفحات */}
+        <div className="flex justify-between items-center mt-6">
+          <div className="flex items-center gap-2">
+            <label>Rows:</label>
             <select
               value={pageSize}
               onChange={(e) => setPageSize(Number(e.target.value))}
-              className="w-full sm:w-32 rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-red-600"
+              className="bg-gray-800 border border-gray-700 rounded px-2 py-1"
             >
               {[5, 10, 20, 50].map((n) => (
                 <option key={n} value={n}>
-                  {n} / page
+                  {n}
                 </option>
               ))}
             </select>
           </div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page === 1}
+              className="px-3 py-1 rounded bg-gray-700 disabled:opacity-50"
+            >
+              Prev
+            </button>
+            <span>
+              {currentPage} / {totalPages}
+            </span>
+            <button
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              disabled={page === totalPages}
+              className="px-3 py-1 rounded bg-gray-700 disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
         </div>
 
-        {/* Empty state */}
-        {filtered.length === 0 ? (
-          <div className="mt-10 rounded-xl border border-gray-800 bg-gray-900 p-6 text-center">
-            <p className="text-gray-300 mb-2">No messages found.</p>
-            <p className="text-gray-500 text-sm">
-              Try adjusting the search text or page size.
-            </p>
-          </div>
-        ) : (
-          <>
-            {/* Mobile / small screens = Cards */}
-            <div className="mt-4 grid grid-cols-1 gap-3 sm:hidden">
-              {pageItems.map((m) => (
-                <div
-                  key={m._id}
-                  className="w-full rounded-lg border border-gray-800 bg-gray-900 p-4"
-                >
-                  <div className="mb-2">
-                    <p className="font-semibold break-words">
-                      {m.name} <span className="text-gray-400">({m.email})</span>
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      {new Date(m.createdAt).toLocaleString()}
-                    </p>
-                  </div>
-                  <p className="text-sm break-words">{m.message}</p>
-                  <div className="mt-3 flex justify-end">
-                    <button
-                      onClick={() => deleteMessage(m._id)}
-                      className="rounded-md bg-red-600 px-3 py-1 text-sm hover:bg-red-700"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* md+ screens = Table */}
-            <div className="mt-4 hidden sm:block">
-              <div className="overflow-x-auto">
-                <table className="min-w-[900px] w-full border-collapse">
-                  <thead>
-                    <tr className="bg-gray-900">
-                      <th className="text-left text-sm font-semibold px-4 py-3 border-b border-gray-800">
-                        Name
-                      </th>
-                      <th className="text-left text-sm font-semibold px-4 py-3 border-b border-gray-800">
-                        Email
-                      </th>
-                      <th className="text-left text-sm font-semibold px-4 py-3 border-b border-gray-800">
-                        Date
-                      </th>
-                      <th className="text-left text-sm font-semibold px-4 py-3 border-b border-gray-800">
-                        Message
-                      </th>
-                      <th className="text-right text-sm font-semibold px-4 py-3 border-b border-gray-800">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {pageItems.map((m) => (
-                      <tr
-                        key={m._id}
-                        className="odd:bg-gray-950 even:bg-[#0f0f10] hover:bg-[#141416]"
-                      >
-                        <td className="px-4 py-3 align-top break-words">
-                          <div className="font-semibold">{m.name}</div>
-                        </td>
-                        <td className="px-4 py-3 align-top break-words text-gray-300">
-                          {m.email}
-                        </td>
-                        <td className="px-4 py-3 align-top text-gray-400 whitespace-nowrap">
-                          {new Date(m.createdAt).toLocaleString()}
-                        </td>
-                        <td className="px-4 py-3 align-top">
-                          <div className="max-w-[40ch] overflow-hidden text-ellipsis">
-                            <span className="break-words">{m.message}</span>
-                          </div>
-                        </td>
-                        <td className="px-4 py-3 align-top">
-                          <div className="flex justify-end">
-                            <button
-                              onClick={() => deleteMessage(m._id)}
-                              className="rounded-md bg-red-600 px-3 py-1 text-sm hover:bg-red-700"
-                            >
-                              Delete
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Pagination */}
-            <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-              <p className="text-xs sm:text-sm text-gray-400">
-                Showing{" "}
-                <span className="text-gray-200">
-                  {filtered.length === 0 ? 0 : pageStart + 1}
-                </span>{" "}
-                to{" "}
-                <span className="text-gray-200">
-                  {Math.min(pageStart + pageSize, filtered.length)}
-                </span>{" "}
-                of <span className="text-gray-200">{filtered.length}</span> messages
-              </p>
-
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setPage((p) => Math.max(1, p - 1))}
-                  disabled={currentPage === 1}
-                  className="rounded-md border border-gray-700 bg-gray-900 px-3 py-1 text-sm disabled:opacity-40"
-                >
-                  Prev
-                </button>
-                <span className="text-sm">
-                  {currentPage} / {totalPages}
-                </span>
-                <button
-                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                  disabled={currentPage === totalPages}
-                  className="rounded-md border border-gray-700 bg-gray-900 px-3 py-1 text-sm disabled:opacity-40"
-                >
-                  Next
-                </button>
-              </div>
-            </div>
-          </>
-        )}
       </div>
     </div>
   );
