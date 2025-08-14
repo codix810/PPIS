@@ -1,6 +1,5 @@
 "use client";
-
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Message {
   _id: string;
@@ -13,16 +12,13 @@ interface Message {
 export default function MessagesPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
-  const [q, setQ] = useState("");
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [statusMsg, setStatusMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
-  const [deleteTarget, setDeleteTarget] = useState<Message | null>(null);
+  const [search, setSearch] = useState("");
+  const [toDelete, setToDelete] = useState<Message | null>(null);
+  const [alert, setAlert] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
-  // جلب البيانات
   useEffect(() => {
     fetch("/api/contact")
-      .then((r) => r.json())
+      .then((res) => res.json())
       .then((data) => {
         setMessages(Array.isArray(data) ? data : []);
         setLoading(false);
@@ -30,218 +26,136 @@ export default function MessagesPage() {
       .catch(() => setLoading(false));
   }, []);
 
-  // البحث
-  const filtered = useMemo(() => {
-    const query = q.trim().toLowerCase();
-    if (!query) return messages;
-    return messages.filter((m) =>
-      [m.name, m.email, m.message].some((v) =>
-        String(v || "").toLowerCase().includes(query)
-      )
-    );
-  }, [messages, q]);
-
-  // الصفحات
-  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
-  const currentPage = Math.min(page, totalPages);
-  const pageStart = (currentPage - 1) * pageSize;
-  const pageItems = filtered.slice(pageStart, pageStart + pageSize);
-
-  useEffect(() => {
-    setPage(1);
-  }, [q, pageSize]);
-
-  // تأكيد الحذف
-  const confirmDelete = (message: Message) => {
-    setDeleteTarget(message);
-  };
-
-  const handleDelete = async () => {
-    if (!deleteTarget) return;
-    const res = await fetch("/api/contact", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: deleteTarget._id }),
-    });
-    if (res.ok) {
-      setMessages((prev) => prev.filter((m) => m._id !== deleteTarget._id));
-      setStatusMsg({ type: "success", text: "تم حذف الرسالة بنجاح ✅" });
-    } else {
-      setStatusMsg({ type: "error", text: "فشل حذف الرسالة ❌" });
+  const deleteMessage = async (id: string) => {
+    try {
+      const res = await fetch("/api/contact", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      if (res.ok) {
+        setMessages((prev) => prev.filter((m) => m._id !== id));
+        setAlert({ type: "success", text: "Message deleted successfully." });
+      } else {
+        setAlert({ type: "error", text: "Failed to delete message." });
+      }
+    } catch {
+      setAlert({ type: "error", text: "Something went wrong." });
     }
-    setDeleteTarget(null);
-    setTimeout(() => setStatusMsg(null), 3000);
+    setToDelete(null);
+    setTimeout(() => setAlert(null), 3000);
   };
+
+  const filteredMessages = messages.filter((m) =>
+    [m.name, m.email, m.message].some((val) =>
+      String(val || "").toLowerCase().includes(search.toLowerCase())
+    )
+  );
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-black">
-        <div className="flex space-x-2">
-          {[...Array(3)].map((_, i) => (
-            <span
-              key={i}
-              className="w-4 h-4 bg-red-600 rounded-full animate-bounce"
-              style={{ animationDelay: `${i * 0.2}s` }}
-            />
-          ))}
-        </div>
+      <div className="flex justify-center items-center h-screen bg-black">
+        <div className="text-white">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="bg-black min-h-screen text-white">
-      <div className="mx-auto w-full max-w-screen-xl px-3 sm:px-6 py-6">
+    <div className="bg-black min-h-screen text-white p-4">
+      <h1 className="text-2xl font-bold mb-4">Contact Messages</h1>
 
-        {/* رسالة النجاح/الخطأ */}
-        {statusMsg && (
-          <div
-            className={`mb-4 rounded-lg p-3 text-sm ${
-              statusMsg.type === "success"
-                ? "bg-green-600 text-white"
-                : "bg-red-600 text-white"
-            }`}
-          >
-            {statusMsg.text}
-          </div>
-        )}
-
-        {/* مودال تأكيد الحذف */}
-        {deleteTarget && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black/70 z-50">
-            <div className="bg-gray-900 rounded-lg p-6 max-w-sm w-full shadow-lg border border-gray-700">
-              <h2 className="text-lg font-bold mb-3">تأكيد الحذف</h2>
-              <p className="text-sm text-gray-300 mb-6">
-                هل أنت متأكد أنك تريد حذف الرسالة من{" "}
-                <span className="text-red-400">{deleteTarget.name}</span>؟
-              </p>
-              <div className="flex justify-end gap-2">
-                <button
-                  onClick={() => setDeleteTarget(null)}
-                  className="px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600"
-                >
-                  إلغاء
-                </button>
-                <button
-                  onClick={handleDelete}
-                  className="px-4 py-2 rounded-md bg-red-600 hover:bg-red-700"
-                >
-                  حذف
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* العنوان والبحث */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-          <h1 className="text-2xl font-bold">Contact Messages</h1>
-          <input
-            type="text"
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="ابحث..."
-            className="px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 text-white w-full sm:w-64"
-          />
+      {/* Alert */}
+      {alert && (
+        <div
+          className={`mb-4 p-3 rounded ${
+            alert.type === "success" ? "bg-green-600" : "bg-red-600"
+          }`}
+        >
+          {alert.text}
         </div>
+      )}
 
-        {/* عرض جدول على الشاشات الكبيرة وكروت على الصغيرة */}
-        <div className="hidden md:block">
-          <table className="w-full border border-gray-700">
-            <thead className="bg-gray-800">
-              <tr>
-                <th className="p-2 text-left">Name</th>
-                <th className="p-2 text-left">Email</th>
-                <th className="p-2 text-left">Message</th>
-                <th className="p-2 text-left">Date</th>
-                <th className="p-2 text-left">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {pageItems.map((m) => (
-                <tr key={m._id} className="border-t border-gray-700">
-                  <td className="p-2">{m.name}</td>
-                  <td className="p-2">{m.email}</td>
-                  <td className="p-2">{m.message}</td>
-                  <td className="p-2">
-                    {new Date(m.createdAt).toLocaleString()}
+      {/* Search */}
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search name / email / message..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full sm:w-72 rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-red-600"
+        />
+      </div>
+
+      {/* Table */}
+      <div className="overflow-x-auto">
+        <table className="min-w-full border border-gray-700">
+          <thead>
+            <tr className="bg-gray-900">
+              <th className="px-4 py-2 border-b border-gray-700 text-left">Name</th>
+              <th className="px-4 py-2 border-b border-gray-700 text-left">Email</th>
+              <th className="px-4 py-2 border-b border-gray-700 text-left">Message</th>
+              <th className="px-4 py-2 border-b border-gray-700 text-left">Date</th>
+              <th className="px-4 py-2 border-b border-gray-700 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredMessages.length > 0 ? (
+              filteredMessages.map((msg) => (
+                <tr key={msg._id} className="hover:bg-gray-800">
+                  <td className="px-4 py-2 border-b border-gray-700">{msg.name}</td>
+                  <td className="px-4 py-2 border-b border-gray-700 break-all">{msg.email}</td>
+                  <td className="px-4 py-2 border-b border-gray-700">{msg.message}</td>
+                  <td className="px-4 py-2 border-b border-gray-700">
+                    {new Date(msg.createdAt).toLocaleString()}
                   </td>
-                  <td className="p-2">
+                  <td className="px-4 py-2 border-b border-gray-700 text-right">
                     <button
-                      onClick={() => confirmDelete(m)}
-                      className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded-lg"
+                      onClick={() => setToDelete(msg)}
+                      className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded"
                     >
                       Delete
                     </button>
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={5} className="px-4 py-6 text-center text-gray-400">
+                  No messages found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
 
-        {/* كروت للموبايل */}
-        <div className="md:hidden space-y-4">
-          {pageItems.map((m) => (
-            <div
-              key={m._id}
-              className="bg-gray-900 p-4 rounded-lg shadow-md border border-gray-700"
-            >
-              <p className="font-semibold">
-                {m.name} ({m.email})
-              </p>
-              <p className="text-sm text-gray-400">
-                {new Date(m.createdAt).toLocaleString()}
-              </p>
-              <p className="mt-2">{m.message}</p>
+      {/* Confirmation Modal */}
+      {toDelete && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60">
+          <div className="bg-gray-900 p-6 rounded-lg shadow-lg w-80">
+            <h2 className="text-lg font-bold mb-4">Confirm Delete</h2>
+            <p className="text-gray-300 mb-6">
+              Are you sure you want to delete this message from{" "}
+              <span className="font-semibold">{toDelete.email}</span>?
+              <span className="font-semibold">{toDelete.name}</span>?
+            </p>
+            <div className="flex justify-end gap-2">
               <button
-                onClick={() => confirmDelete(m)}
-                className="mt-3 bg-red-600 hover:bg-red-700 px-3 py-1 rounded-lg"
+                onClick={() => setToDelete(null)}
+                className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => deleteMessage(toDelete._id)}
+                className="px-4 py-2 bg-red-600 rounded hover:bg-red-700"
               >
                 Delete
               </button>
             </div>
-          ))}
-        </div>
-
-        {/* الصفحات */}
-        <div className="flex justify-between items-center mt-6">
-          <div className="flex items-center gap-2">
-            <label>Rows:</label>
-            <select
-              value={pageSize}
-              onChange={(e) => setPageSize(Number(e.target.value))}
-              className="bg-gray-800 border border-gray-700 rounded px-2 py-1"
-            >
-              {[5, 10, 20, 50].map((n) => (
-                <option key={n} value={n}>
-                  {n}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex gap-2">
-            <button
-              onClick={() => setPage((p) => Math.max(1, p - 1))}
-              disabled={page === 1}
-              className="px-3 py-1 rounded bg-gray-700 disabled:opacity-50"
-            >
-              Prev
-            </button>
-            <span>
-              {currentPage} / {totalPages}
-            </span>
-            <button
-              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-              disabled={page === totalPages}
-              className="px-3 py-1 rounded bg-gray-700 disabled:opacity-50"
-            >
-              Next
-            </button>
           </div>
         </div>
-
-      </div>
+      )}
     </div>
   );
 }
