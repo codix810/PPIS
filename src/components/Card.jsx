@@ -26,7 +26,7 @@ const Card = () => {
       title: "News",
       desc: "Latest corporate updates",
       bg: "bg-gradient-to-tr from-yellow-700 via-yellow-800 to-yellow-200",
-      link: "/news",
+      link: "/News",
     },
     {
       icon: <FaUniversity className="text-4xl text-red-200" />,
