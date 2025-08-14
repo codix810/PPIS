@@ -93,6 +93,9 @@ export default function DashboardLayout({
           <Link href="/dashboard" onClick={closeSidebar} className={`${linkClass} text-black hover:bg-red-100`}>
             <FaNewspaper /> <span>Dashboard</span>
           </Link>
+          <Link href="/dashboard/messages" onClick={closeSidebar} className={`${linkClass} text-black hover:bg-red-100`}>
+            <FaNewspaper /> <span> view messages</span>
+          </Link>
         </div>
 
         <div className={groupClass}>
