@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import Link from 'next/link';
 
 type Teacher = {
   _id: string;
@@ -74,6 +75,7 @@ export default function ProgramDirectors() {
   transition={{ duration: 0.6, delay: i * 0.2 }}
   className="bg-gray-900 shadow-lg p-6 rounded-xl hover:shadow-2xl transition"
 >
+<Link href={`/TeachersList/${teacher._id}`}>
   <img
     src={teacher.imageUrl}
     alt={teacher.name}
@@ -82,6 +84,7 @@ export default function ProgramDirectors() {
     height={200}
     loading="lazy"
   />
+  </Link>
   <h3 className="text-xl font-semibold text-white">{teacher.name}</h3>
   <p className="text-gray-400">{teacher.specialty}</p>
 </motion.div>

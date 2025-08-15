@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import ppis from "../../../public/ppis-removebg-preview.png";
 import { useEffect, useState } from "react";
+import Link from 'next/link';
 
 type Teacher = {
   _id: string;
@@ -113,12 +114,16 @@ export default function AboutPage() {
           className="bg-gray-900 shadow-lg p-6 rounded-xl hover:shadow-2xl transition flex flex-col items-center"
         >
           <div className="w-40 h-40 rounded-full overflow-hidden mb-4">
-            <img
-              src={teacher.imageUrl}
-              alt={teacher.name}
-              className="object-cover w-full h-full"
-              loading="lazy"
-            />
+<Link href={`/TeachersList/${teacher._id}`}>
+  <img
+    src={teacher.imageUrl}
+    alt={teacher.name}
+    className="rounded-full mx-auto mb-4 object-cover"
+    width={200}
+    height={200}
+    loading="lazy"
+  />
+  </Link>
           </div>
           <h3 className="text-xl font-semibold text-white text-center">
             {teacher.name}
@@ -129,7 +134,10 @@ export default function AboutPage() {
     </div>
   </div>
 </section>
+
     </div>
+
+
 
   );
 }
