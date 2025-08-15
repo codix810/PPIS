@@ -34,6 +34,18 @@ export default function Footer() {
       transition={{ duration: 0.8, ease: 'easeOut' }}
       className="bg-gray-950 text-white py-12 px-8 sm:px-16 font-sans text-sm"
     >
+        {/* PPIS Logo */}
+      <div className="max-w-7xl mx-auto  flex flex-col md:flex-row  justify-between mb-8 gap-6">
+        <div className="flex items-center space-x-4">
+          <img
+            src="/ppis.jpg" 
+            alt="PPIS Logo"
+            className="w-14 h-14 rounded-full object-cover"
+          />
+          <span className="text-5xl font-bold text-red-500 tracking-wide">PPIS</span>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
 
         {/* About PPIS */}
@@ -50,18 +62,18 @@ export default function Footer() {
           <ul className="space-y-3">
             <li className="flex items-center gap-3">
               <FaPhone className="text-lg text-gray-400" />
-              <span className="text-gray-300">+1 234 567 8900</span>
+              <span className="text-gray-300">+20 100 799 4982</span>
             </li>
             <li className="flex items-center gap-3">
               <FaEnvelope className="text-lg text-gray-400" />
-              <span className="text-gray-300">contact@ppis.com</span>
+              <span className="text-gray-300">ahmad.elshoura@aun.edu.eg</span>
             </li>
             <li className="flex items-center gap-3">
               <FaWhatsapp className="text-lg text-gray-400" />
-              <span className="text-gray-300">+1 987 654 3210</span>
+              <span className="text-gray-300">+20 100 799 4982</span>
             </li>
             <li className="mt-2 text-gray-300">
-              123 Knowledge St., Cairo, Egypt
+               Assuit, Egypt
             </li>
           </ul>
         </div>
@@ -87,18 +99,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* PPIS Logo */}
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between mt-8 gap-6">
-        <div className="flex items-center space-x-4">
-          <span className="text-5xl font-bold text-red-500 tracking-wide">PPIS</span>
-          <img
-            src="/ppis.jpg" 
-            alt="PPIS Logo"
-            className="w-14 h-14 rounded-full object-cover"
-          />
-        </div>
-      </div>
-
+    
       {/* Divider */}
       <div className="max-w-7xl mx-auto mt-10 border-t border-gray-600"></div>
 

@@ -1,9 +1,11 @@
-import { link } from "fs";
+// import { link } from "fs";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import React from "react";
 import { FaLaptopCode, FaRunning, FaRegNewspaper, FaUserTie } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa";
 import { FaUniversity } from "react-icons/fa";
+
 
 const Card = () => {
   const cards = [
@@ -41,8 +43,11 @@ const Card = () => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 py-20 px-8 bg-black">
       {cards.map((card, index) => (
-        <div
+        <motion.div
           key={index}
+          initial={{ opacity: 0, y: 90 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: index * 0.2 }}
           className={`${card.bg} text-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center hover:scale-105 transition-transform duration-300`}
         >
           {card.icon}
@@ -54,7 +59,7 @@ const Card = () => {
             </Link>
          </button>
 
-        </div>
+        </motion.div>
       ))}
     </div>
   );

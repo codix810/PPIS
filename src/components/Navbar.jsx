@@ -40,30 +40,30 @@ export default function Navbar() {
                 />
                 <Link
                   href="/"
-                  className="text-2xl font-bold text-white tracking-wide hover:text-red-500 transition-colors"
+                  className="text-3xl font-bold text-white tracking-wide hover:text-red-500 transition-colors"
                 >
                   PPIS
                 </Link>
               </div>
 
               {/* Navigation items - hidden when menu button shows */}
-              <div className="hidden min-[770px]:flex flex-wrap gap-6 justify-center flex-1">
+              <div className="hidden min-[770px]:flex flex-wrap gap-6  justify-center flex-1">
                 {navigation.map((item, idx) => {
                   const isActive = pathname === item.href;
                   return (
                     <Link
                       key={item.name}
                       href={item.href}
-                      className={`relative px-2 py-1 text-sm font-medium transition duration-200 ${
+                      className={`relative px-2 py-1 text-sm font-bold transition  duration-200 ${
                         isActive
-                          ? 'text-red-500 font-semibold'
-                          : 'text-white hover:text-red-400'
+                          ? 'text-red-600 font-bold'
+                          : 'text-white hover:text-red-500'
                       }`}
                     >
-                      {item.name}
-                      {idx < navigation.length - 1 && (
-                        <span className="absolute right-[-12px] text-gray-500">|</span>
-                      )}
+                      {item.name} |
+                      {/* {idx < navigation.length - 1 && (
+                        <span className="absolute mx-1  text-white">|</span>
+                      )} */}
                     </Link>
                   );
                 })}

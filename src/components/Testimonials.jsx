@@ -1,6 +1,8 @@
+import { motion } from "framer-motion";
 import Link from "next/link";
 import React from "react";
 import { FaLaptopCode, FaBalanceScale, FaMicrochip, FaChartLine } from "react-icons/fa";
+
 
 const Subjects = () => {
   const subjects = [
@@ -37,8 +39,12 @@ const Subjects = () => {
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {subjects.map((subject, index) => (
-          <div
+          <motion.div
             key={index}
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.2 }}
+            
             className=" text-white rounded-lg shadow-2xl bg-gradient-to-tl cursor-pointer from-white/20 via-black to-white/50 p-6 flex flex-col items-center text-center hover:shadow-2xl  hover:scale-105 transition-transform duration-300"
           >
             {subject.icon}
@@ -49,7 +55,7 @@ const Subjects = () => {
               Learn More
             </button>
             </Link>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>

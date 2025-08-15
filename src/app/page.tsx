@@ -1,8 +1,12 @@
+"use client";
 import Image from "next/image";
 import Card from "../components/Card";
 import Testimonials from "../components/Testimonials";
 import logo from "../../public/ppis-removebg-preview.png";
 import { FaCheckCircle } from "react-icons/fa";
+import { motion } from "framer-motion";
+
+
 
 export default function Home() {
   return (
@@ -11,7 +15,11 @@ export default function Home() {
       <div className="bg-gradient-to-tr from-red-950 via-black to-blue-950 h-auto min-h-[24rem] py-6 px-20 text-white flex flex-col md:flex-row items-center justify-between gap-8">
         
         {/* Text Content */}
-        <div className="flex flex-col items-center md:items-start text-center md:text-left">
+        <motion.div
+         initial={{ opacity: 0, x: -100 }}
+         animate={{ opacity: 1, x: 0 }}
+         transition={{ duration: 0.9 }}
+         className="flex flex-col items-center md:items-start text-center md:text-left">
           <h1 className="text-3xl text-center sm:text-4xl md:text-5xl max-w-[550px] font-bold mb-4">
             <span className="text-red-700">Public</span> Policy Information{" "}
             <span className="text-blue-700">Systems</span>
@@ -29,9 +37,14 @@ export default function Home() {
               Innovate | Proceed | Progress | Success
             </p>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Logo */}
+      {/* Logo */}
+      <motion.div
+        initial={{ opacity: 0, x: 100 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.9 }}
+      >
         <Image
           src={logo}
           alt="Website Logo"
@@ -39,6 +52,7 @@ export default function Home() {
           height={120}
           className="w-40 sm:w-56 md:w-72 h-auto"
         />
+      </motion.div>
       </div>
 
       {/* Main Content */}
