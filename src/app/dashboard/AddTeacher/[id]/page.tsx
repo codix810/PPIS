@@ -25,36 +25,22 @@ export default function EditTeacherPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!id) {
-      setError('Teacher ID not found in URL.');
-      setLoading(false);
-      return;
+useEffect(() => {
+  const fetchTeacher = async () => {
+    try {
+      const res = await fetch(`/api/teacher/${id}`);
+      const data = await res.json();
+      const t = data?.teacher ?? data;
+      if (!t) setError('Teacher data not found.');
+      else setTeacher(t);
+    } catch (err) {
+      setError('Error fetching teacher.');
+    } finally {
+      setLoading(false); // ضروري توقف الـ spinner
     }
-
-    const fetchTeacher = async () => {
-      try {
-        const res = await fetch(`/api/teacher/${id}`);
-        if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
-        const data = await res.json();
-        const t = data?.teacher ?? data;
-        if (!t) {
-          setError('Teacher data not found.');
-        } else {
-          setTeacher((prev) => ({ ...prev, ...t }));
-        }
-    } catch (err: unknown) {
-  if (err instanceof Error) {
-    setError(err.message || 'Error fetching data.');
-  } else {
-    setError('Error fetching data.');
-  }
-}
-
-    };
-
-    fetchTeacher();
-  }, [id]);
+  };
+  if (id) fetchTeacher();
+}, [id]);
 
   const handleUpdate = async () => {
     setError(null);
