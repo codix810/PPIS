@@ -74,11 +74,11 @@ export default function ContactPage() {
           <p>Feel free to reach out to us using any of the methods below.</p>
           <div className="flex items-center text-w space-x-4">
             <FaPhoneAlt className="text-blue-600 text-xl" />
-            <span>+201030171518</span>
+            <span>+20 100 799 4982</span>
           </div>
           <div className="flex items-center space-x-4">
             <FaEnvelope className="text-red-600 text-xl" />
-            <span>ppis@aun.edu.eg</span>
+            <span>ahmad.elshoura@aun.edu.eg</span>
           </div>
           <div className="flex items-center space-x-4">
             <FaMapMarkerAlt className="text-green-600 text-xl" />

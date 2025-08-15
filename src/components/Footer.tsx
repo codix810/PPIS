@@ -113,17 +113,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* PPIS Logo & Website Icon  */}
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between mt-8 gap-6">
-        <div className="flex items-center space-x-4">
-          <span className="text-5xl font-bold text-red-500 tracking-wide">PPIS</span>
-          <img
-            src="/ppis.jpg" 
-            alt="PPIS Logo"
-            className="w-14 h-14 rounded-full object-cover"
-          />
-        </div>
-      </div>
+      
 
       {/* Divider */}
       <div className="max-w-7xl mx-auto mt-10 border-t border-gray-600"></div>
