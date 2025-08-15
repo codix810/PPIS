@@ -3,13 +3,35 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import ppis from "../../../public/ppis-removebg-preview.png";
-import img1 from "../../../public/الشورى.jpg";
-import img2 from "../../../public/الحبشي.jpg";
-import img3 from "../../../public/طارق.jpg";
+import { useEffect, useState } from "react";
+
+type Teacher = {
+  _id: string;
+  name: string;
+  specialty: string;
+  imageUrl: string;
+};
 
 export default function AboutPage() {
+    const [teachers, setTeachers] = useState<Teacher[]>([]);
+    const [loading, setLoading] = useState(true);
+  
+    useEffect(() => {
+      const fetchTeachers = async () => {
+        try {
+          const res = await fetch("/api/teacher");
+          const data = await res.json();
+          setTeachers(data.teachers || []);
+        } catch (error) {
+          console.error("Failed to fetch teachers", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchTeachers();
+    }, []);
   return (
-    <div className="bg-black text-white">
+<div className="bg-black text-white overflow-x-hidden">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-tr from-red-950 via-black to-blue-950 text-white py-20">
         <div className="container mx-auto px-6 text-center">
@@ -70,44 +92,44 @@ export default function AboutPage() {
 
      
       {/* Team Section */}
-      <section className="py-16 bg-gradient-to-tr from-red-950 via-black to-blue-950">
-        <div className="container mx-auto px-6 text-center">
-          <motion.h2
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="text-3xl font-bold mb-10"
-          >
-             Program Directors
-          </motion.h2>
+<section className="py-16 bg-gradient-to-tr from-red-950 via-black to-blue-950 overflow-x-hidden">
+  <div className="container mx-auto px-6 text-center">
+    <motion.h2
+      initial={{ opacity: 0, y: -20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7 }}
+      className="text-3xl text-white font-bold mb-10"
+    >
+      Program Directors
+    </motion.h2>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { name: "Tarik Kamal" , img: img3 },
-              { name: "Ahmed EL-Shoura", role: "General coordinator", img: img1 },
-              { name: "Ahmed Nady", role: "General Registrar", img: img2 },
-            ].map((member, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: i * 0.2 }}
-                className="bg-gray-900 shadow-lg  p-6 rounded-xl  hover:shadow-2xl transition"
-              >
-                <Image
-                  src={member.img}
-                  alt={member.name}
-                  width={200}
-                  height={200}
-                  className="rounded-full mx-auto mb-4"
-                />
-                <h3 className="text-xl font-semibold">{member.name}</h3>
-                <p className="text-gray-500">{member.role}</p>
-              </motion.div>
-            ))}
+    <div className="grid md:grid-cols-3 gap-8">
+      {teachers.map((teacher, i) => (
+        <motion.div
+          key={teacher._id}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: i * 0.2 }}
+          className="bg-gray-900 shadow-lg p-6 rounded-xl hover:shadow-2xl transition flex flex-col items-center"
+        >
+          <div className="w-40 h-40 rounded-full overflow-hidden mb-4">
+            <img
+              src={teacher.imageUrl}
+              alt={teacher.name}
+              className="object-cover w-full h-full"
+              loading="lazy"
+            />
           </div>
-        </div>
-      </section>
+          <h3 className="text-xl font-semibold text-white text-center">
+            {teacher.name}
+          </h3>
+          <p className="text-gray-400 text-center">{teacher.specialty}</p>
+        </motion.div>
+      ))}
     </div>
+  </div>
+</section>
+    </div>
+
   );
 }
