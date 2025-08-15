@@ -16,8 +16,6 @@ const navigation = [
   { name: 'Activities', href: '/activities' },
   { name: 'Students', href: '/Student' },
   { name: 'About', href: '/about' },
-  { name: 'Events', href: '/events' },
-  { name: 'Gallery', href: '/gallery' },
 ];
 
 export default function Navbar() {
@@ -128,3 +126,4 @@ export default function Navbar() {
     </Disclosure>
   );
 }
+
