@@ -74,18 +74,17 @@ export default function ContactPage() {
           <p>Feel free to reach out to us using any of the methods below.</p>
           <div className="flex items-center text-w space-x-4">
             <FaPhoneAlt className="text-blue-600 text-xl" />
-            <span>+20 123 456 789</span>
+            <span>+201030171518</span>
           </div>
           <div className="flex items-center space-x-4">
             <FaEnvelope className="text-red-600 text-xl" />
-            <span>contact@ppis.com</span>
+            <span>ppis@aun.edu.eg</span>
           </div>
           <div className="flex items-center space-x-4">
             <FaMapMarkerAlt className="text-green-600 text-xl" />
-            <span> Egypt , Assuit</span>
+            <span>Assiut University - Faculty of Commerce - Administrative Building - 5th Floor</span>
           </div>
         </div>
-
         {/* Contact Form */}
         <form
           onSubmit={handleSubmit}
