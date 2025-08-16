@@ -1,88 +1,87 @@
 import React from "react";
-import { FaChartLine, FaMoneyBillWave, FaStore, FaBusinessTime, FaExchangeAlt, FaBriefcase, FaHandshake, FaChartPie } from "react-icons/fa";
+import { 
+  FaChartLine, 
+  FaMoneyBillWave, 
+  FaStore, 
+  FaBusinessTime, 
+  FaExchangeAlt, 
+  FaBriefcase, 
+  FaHandshake, 
+  FaChartPie, 
+  FaGlobe 
+} from "react-icons/fa";
 
 const Commerce = () => {
   const years = [
     {
-      year: "First Year",
+      year: "Level One",
       terms: [
         {
           term: "Term 1",
           subjects: [
             { icon: <FaChartLine />, name: "Principles of Economics" },
-            { icon: <FaMoneyBillWave />, name: "Introduction to Accounting" },
-            { icon: <FaStore />, name: "Business Management Basics" },
+            { icon: <FaStore />, name: "Fundamentals of Management and organization" },
           ],
         },
         {
           term: "Term 2",
           subjects: [
-            { icon: <FaBusinessTime />, name: "Marketing Fundamentals" },
-            { icon: <FaExchangeAlt />, name: "Microeconomics" },
-            { icon: <FaBriefcase />, name: "Business Communication" },
+            { icon: <FaMoneyBillWave />, name: "Principles of Accounting" },
+            { icon: <FaBusinessTime />, name: "Contemporary Issues" },
           ],
         },
       ],
     },
     {
-      year: "Second Year",
+      year: "Level Two",
       terms: [
         {
           term: "Term 1",
           subjects: [
-            { icon: <FaHandshake />, name: "Financial Accounting" },
-            { icon: <FaChartPie />, name: "Statistics for Business" },
-            { icon: <FaChartLine />, name: "Macroeconomics" },
+            { icon: <FaHandshake />, name: "Public Finance" },
+            { icon: <FaChartPie />, name: "HRM / Organizational Behavior" },
           ],
         },
         {
           term: "Term 2",
           subjects: [
-            { icon: <FaStore />, name: "E-commerce" },
-            { icon: <FaMoneyBillWave />, name: "Banking and Finance" },
-            { icon: <FaExchangeAlt />, name: "International Trade" },
+            { icon: <FaStore />, name: "Principles of Statistics" },
+            { icon: <FaMoneyBillWave />, name: "Governmental Accounting" },
           ],
         },
       ],
     },
     {
-      year: "Third Year",
+      year: "Level Three",
       terms: [
         {
           term: "Term 1",
           subjects: [
-            { icon: <FaChartLine />, name: "Investment Analysis" },
-            { icon: <FaBriefcase />, name: "Entrepreneurship" },
-            { icon: <FaChartPie />, name: "Cost Accounting" },
+            { icon: <FaChartLine />, name: "Marketing" },
           ],
         },
         {
           term: "Term 2",
           subjects: [
-            { icon: <FaHandshake />, name: "Business Ethics" },
-            { icon: <FaExchangeAlt />, name: "International Marketing" },
-            { icon: <FaStore />, name: "Retail Management" },
+            { icon: <FaHandshake />, name: "Econometrics" },
           ],
         },
       ],
     },
     {
-      year: "Fourth Year",
+      year: "Level Four",
       terms: [
         {
           term: "Term 1",
           subjects: [
-            { icon: <FaBusinessTime />, name: "Strategic Management" },
-            { icon: <FaChartLine />, name: "Financial Markets" },
-            { icon: <FaMoneyBillWave />, name: "Corporate Finance" },
+            { icon: <FaGlobe />, name: "Public Administration Information Systems" },
+            { icon: <FaHandshake />, name: "Managing Social and Political Risk in Public Policy" },
           ],
         },
         {
           term: "Term 2",
           subjects: [
-            { icon: <FaChartPie />, name: "Business Analytics" },
-            { icon: <FaHandshake />, name: "Negotiation Skills" },
-            { icon: <FaBriefcase />, name: "Capstone Project" },
+            { icon: <FaChartPie />, name: "Money and Banking" },
           ],
         },
       ],

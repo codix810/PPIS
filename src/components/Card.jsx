@@ -46,7 +46,7 @@ const Card = () => {
         <motion.div
           key={index}
           initial={{ opacity: 0, y: 90 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: index * 0.2 }}
           className={`${card.bg} text-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center hover:scale-105 transition-transform duration-300`}
         >

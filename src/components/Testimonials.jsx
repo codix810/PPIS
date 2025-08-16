@@ -41,8 +41,8 @@ const Subjects = () => {
         {subjects.map((subject, index) => (
           <motion.div
             key={index}
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 80 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.2 }}
             
             className=" text-white rounded-lg shadow-2xl bg-gradient-to-tl cursor-pointer from-white/20 via-black to-white/50 p-6 flex flex-col items-center text-center hover:shadow-2xl  hover:scale-105 transition-transform duration-300"

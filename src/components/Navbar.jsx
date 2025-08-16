@@ -14,6 +14,8 @@ const navigation = [
   { name: 'Instructors', href: '/TeachersList' },
   { name: 'News', href: '/News' },
   { name: 'Activities', href: '/activities' },
+  { name: 'Subjects', href: '/subjects' },
+  { name: 'Careers', href: '/careers' },
   { name: 'Students', href: '/Student' },
   { name: 'About', href: '/about' },
 ];
@@ -47,7 +49,7 @@ export default function Navbar() {
               </div>
 
               {/* Navigation items - hidden when menu button shows */}
-              <div className="hidden min-[770px]:flex flex-wrap gap-6  justify-center flex-1">
+              <div className="hidden min-[770px]:flex flex-wrap gap-3 justify-center flex-1">
                 {navigation.map((item, idx) => {
                   const isActive = pathname === item.href;
                   return (

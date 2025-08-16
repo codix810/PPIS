@@ -63,7 +63,7 @@ export default function TeachersDetail({ params }: PageProps) {
     : '';
 
   return (
-    <div className="w-full font-sans">
+    <div className="w-full font-sans bg-gradient-to-tr from-red-950 via-black to-blue-950">
 
       {/* الصورة: واضحة ومناسبة لأي حجم */}
       <motion.div
@@ -81,30 +81,30 @@ export default function TeachersDetail({ params }: PageProps) {
 
       {/* المحتوى تحت الصورة */}
       <motion.div
-        className="max-w-4xl mx-auto px-6 mt-6"
+        className="max-w-4xl mx-auto text-center px-6 mt-6"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.3 }}
       >
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
+        <h1 className="text-3xl md:text-4xl font-bold text-white">
           {teachersItem.name}
         </h1>
-        <p className="text-lg md:text-xl text-gray-600 mt-2">
+        <p className="text-lg md:text-xl text-white mt-2">
           {teachersItem.specialty}
         </p>
-        <p className="text-base md:text-lg text-gray-700 mt-4 leading-relaxed">
+        <p className="text-base md:text-lg text-white mt-4 leading-relaxed">
           {teachersItem.description}
         </p>
 
         {/* Footer: Back button + تاريخ */}
-        <div className="flex justify-between items-center mt-6">
+        <div className="flex justify-between items-center py-6 ">
           <button
             onClick={() => router.back()}
             className="bg-red-600 text-white px-5 py-2 rounded-md hover:bg-red-700 transition"
           >
             Back
           </button>
-          <span className="text-gray-500 text-sm">{createdAt}</span>
+          <span className="text-white text-sm">{createdAt}</span>
         </div>
       </motion.div>
     </div>

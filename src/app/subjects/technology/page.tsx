@@ -1,89 +1,100 @@
 import React from "react";
-import { FaNetworkWired, FaDatabase, FaCode, FaRobot, FaCloud, FaMobileAlt, FaShieldAlt, FaMicrochip } from "react-icons/fa";
-import { FaLaptopCode } from "react-icons/fa6";
+import { 
+  FaNetworkWired, 
+  FaDatabase, 
+  FaCode, 
+  FaRobot, 
+  FaCloud, 
+  FaMobileAlt, 
+  FaShieldAlt, 
+  FaMicrochip 
+} from "react-icons/fa";
+import {  
+  FaBrain, 
+  FaServer, 
+  FaLock, 
+  FaChartLine, 
+  FaLightbulb 
+} from "react-icons/fa6";
+import { FaLaptopCode, FaCogs, FaProjectDiagram } from "react-icons/fa";
+
 
 const TechnologySubjects = () => {
   const years = [
     {
-      year: "First Year",
+      year: "Level One",
       terms: [
         {
           term: "Term 1",
           subjects: [
-            { name: "Introduction to Technology", icon: <FaMicrochip /> },
-            { name: "Computer Networks Basics", icon: <FaNetworkWired /> },
+            { name: "Computer Basics", icon: <FaLaptopCode /> },
+            { name: "Fundamental of Information", icon: <FaLightbulb /> },
+          ],
+        },
+        {
+          term: "Term 2",
+          subjects: [
+            { name: "Computer Networks", icon: <FaNetworkWired /> },
             { name: "Fundamentals of Programming", icon: <FaCode /> },
           ],
         },
+      ],
+    },
+    {
+      year: "Level Two",
+      terms: [
+        {
+          term: "Term 1",
+          subjects: [
+            { name: "Analysis and Design of Information Systems", icon: <FaProjectDiagram /> },
+            { name: "Programming 2", icon: <FaLaptopCode /> },
+          ],
+        },
         {
           term: "Term 2",
           subjects: [
-            { name: "Database Fundamentals", icon: <FaDatabase /> },
-            { name: "Cloud Computing Basics", icon: <FaCloud /> },
-            { name: "Cybersecurity Principles", icon: <FaShieldAlt /> },
+            { name: "Databases", icon: <FaDatabase /> },
+            { name: "Data Structures and Algorithm", icon: <FaServer /> },
+            // { name: "Cloud Infrastructure", icon: <FaCloud /> },
           ],
         },
       ],
     },
     {
-      year: "Second Year",
+      year: "Level Three",
       terms: [
         {
           term: "Term 1",
           subjects: [
-            { name: "Mobile App Development", icon: <FaMobileAlt /> },
-            { name: "IoT Fundamentals", icon: <FaRobot /> },
-            { name: "Advanced Networking", icon: <FaNetworkWired /> },
+            { name: "Fundamental of Artificial Intelligence", icon: <FaBrain /> },
+            { name: "Managerial Information System", icon: <FaChartLine /> },
           ],
         },
         {
           term: "Term 2",
           subjects: [
+            { name: "Learning From Data and Machine Learning", icon: <FaRobot /> },
             { name: "Advanced Databases", icon: <FaDatabase /> },
-            { name: "Web Development", icon: <FaCode /> },
-            { name: "Cloud Infrastructure", icon: <FaCloud /> },
           ],
         },
       ],
     },
     {
-      year: "Third Year",
+      year: "Level Four",
       terms: [
         {
           term: "Term 1",
           subjects: [
-            { name: "AI Fundamentals", icon: <FaRobot /> },
-            { name: "Machine Learning", icon: <FaMicrochip /> },
-            { name: "Cybersecurity Advanced", icon: <FaShieldAlt /> },
+            { name: "Data Mining and Big Data Analytics", icon: <FaServer /> },
+            { name: "Data and Information Security", icon: <FaLock /> },
           ],
         },
         {
           term: "Term 2",
           subjects: [
-            { name: "Mobile App Advanced", icon: <FaMobileAlt /> },
-            { name: "Data Analytics", icon: <FaDatabase /> },
-            { name: "Cloud Security", icon: <FaCloud /> },
-          ],
-        },
-      ],
-    },
-    {
-      year: "Fourth Year",
-      terms: [
-        {
-          term: "Term 1",
-          subjects: [
-            { name: "Blockchain Technology", icon: <FaDatabase /> },
-            { name: "AI Applications", icon: <FaRobot /> },
-            { name: "Ethical Hacking", icon: <FaShieldAlt /> },
-          ],
-        },
-        {
-          term: "Term 2",
-          subjects: [
-            { name: "Capstone Project", icon: <FaCode /> },
-            { name: "Future Tech Trends", icon: <FaMicrochip /> },
-            { name: "Entrepreneurship in Tech", icon: <FaLaptopCode /> },
+            { name: "Capstone Project", icon: <FaLaptopCode /> },
+            { name: "Future Tech Trends", icon: <FaLightbulb /> },
+            // { name: "Entrepreneurship in Tech", icon: <FaChartLine /> },
           ],
         },
       ],
@@ -93,11 +104,11 @@ const TechnologySubjects = () => {
   return (
     <section className="py-16 px-8 bg-gradient-to-tr from-green-900 via-black to-blue-950 text-white">
       <h2 className="text-3xl font-bold text-center mb-12">Technology Subjects</h2>
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {years.map((year, index) => (
           <div
             key={index}
-            className="rounded-xl shadow-lg bg-gradient-to-tl from-white/20 via-black to-white/30 p-6 hover:scale-105 transition-transform duration-300"
+            className="rounded-xl shadow-lg bg-gradient-to-br from-white/10 to-white/5 p-6 hover:scale-105 transition-transform duration-300"
           >
             <h3 className="text-2xl font-bold text-center mb-6">{year.year}</h3>
             {year.terms.map((term, tIndex) => (
