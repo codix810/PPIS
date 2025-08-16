@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 type TopStudent = {
   _id: string;
@@ -13,6 +14,7 @@ type TopStudent = {
 export default function TopStudentsList() {
   const [students, setStudents] = useState<TopStudent[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -67,26 +69,35 @@ export default function TopStudentsList() {
         </motion.h2>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {students.map((student, i) => (
-            <motion.div
-              key={student._id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: i * 0.2 }}
-              className="bg-gray-900 shadow-lg p-6 rounded-xl hover:shadow-2xl transition"
-            >
-              <img
-                src={student.imageUrl}
-                alt={student.name}
-                className="rounded-full mx-auto mb-4 object-cover"
-                width={200}
-                height={200}
-                loading="lazy"
-              />
-              <h3 className="text-xl font-semibold text-white">{student.name}</h3>
-              <p className="text-gray-400">{student.description}</p>
-            </motion.div>
-          ))}
+          {students.map((student, i) => {
+            // نجيب أول 50 كلمة من الوصف
+            const shortDescription = student.description
+              .split(" ")
+              .slice(0, 20)
+              .join(" ") + (student.description.split(" ").length > 20 ? "..." : "");
+
+            return (
+              <motion.div
+                key={student._id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: i * 0.2 }}
+                className="bg-gray-900 shadow-lg p-6 rounded-xl hover:shadow-2xl transition"
+              >
+                <img
+                  src={student.imageUrl}
+                  alt={student.name}
+                  className="rounded-full mx-auto mb-4 object-cover cursor-pointer"
+                  width={200}
+                  height={200}
+                  loading="lazy"
+                  onClick={() => router.push(`/Student/${student._id}`)}
+                />
+                <h3 className="text-xl font-semibold text-white">{student.name}</h3>
+                <p className="text-gray-400">{shortDescription}</p>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
