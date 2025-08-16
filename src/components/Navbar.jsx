@@ -49,7 +49,7 @@ export default function Navbar() {
               </div>
 
               {/* Navigation items - hidden when menu button shows */}
-              <div className="hidden min-[770px]:flex flex-wrap gap-3 justify-center flex-1">
+              <div className="hidden min-[670px]:flex flex-wrap gap-3 justify-center flex-1">
                 {navigation.map((item, idx) => {
                   const isActive = pathname === item.href;
                   return (
@@ -72,7 +72,7 @@ export default function Navbar() {
               </div>
 
               {/* Join Us button - hidden when menu button shows */}
-              <div className="hidden min-[770px]:flex">
+              <div className="hidden min-[670px]:flex">
                 <Link
                   href="/join"
                   className="px-4 py-2 rounded-md bg-red-600 text-white font-semibold hover:bg-red-700 transition-colors"
@@ -82,7 +82,7 @@ export default function Navbar() {
               </div>
 
               {/* Mobile Menu Button - shows only on <= 950px */}
-              <div className="flex min-[770px]:hidden">
+              <div className="flex min-[670px]:hidden">
                 <DisclosureButton className="inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-red-600 transition-colors">
                   {open ? (
                     <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
@@ -95,7 +95,7 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Panel */}
-          <DisclosurePanel className="min-[770px]:hidden bg-[#0B1A33]">
+          <DisclosurePanel className="min-[670px]:hidden bg-[#0B1A33]">
             <div className="space-y-1 px-3 pt-3 pb-3">
               {navigation.map((item) => {
                 const isActive = pathname === item.href;
@@ -128,3 +128,4 @@ export default function Navbar() {
     </Disclosure>
   );
 }
+
