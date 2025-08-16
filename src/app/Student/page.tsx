@@ -87,9 +87,7 @@ export default function TopStudentsList() {
                 <img
                   src={student.imageUrl}
                   alt={student.name}
-                  className="rounded-full mx-auto mb-4 object-cover cursor-pointer"
-                  width={200}
-                  height={200}
+                  className="w-40 h-40 rounded-full mx-auto mb-4 object-cover cursor-pointer"
                   loading="lazy"
                   onClick={() => router.push(`/Student/${student._id}`)}
                 />
@@ -97,6 +95,7 @@ export default function TopStudentsList() {
                 <p className="text-gray-400">{shortDescription}</p>
               </motion.div>
             );
+
           })}
         </div>
       </div>

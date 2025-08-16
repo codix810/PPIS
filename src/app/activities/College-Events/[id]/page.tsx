@@ -66,7 +66,7 @@ export default function EventDetail({ params }: PageProps) {
   return (
     <div className='bg-gradient-to-tr from-red-950 via-black to-blue-950 '>
       <div className="max-w-4xl  mx-auto p-6 font-sans" style={{ fontFamily: "'Poppins', sans-serif" }}>
-        <h1 className="text-4xl font-bold mb-14 text-start" style={{ color:"#ef1717ff" }}>|College-Events</h1>
+        <h1 className="text-3xl md:text-4xl font-bold mb-14 text-start" style={{ color:"#ef1717ff" }}>|College-Events</h1>
         
         <img
           src={eventItem.imageUrl}
