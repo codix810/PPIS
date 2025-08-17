@@ -19,7 +19,7 @@ const Subjects = () => {
     },
     {
       icon: <FaBalanceScale className="text-5xl text-red-500" />,
-      title: "Politics",
+      title: "Policies",
       desc: "Understand political systems, law, and governance.",
       link: "/politics",
     },
@@ -31,7 +31,7 @@ const Subjects = () => {
     },
     {
       icon: <FaChartLine className="text-5xl text-yellow-400" />,
-      title: "Commerce",
+      title: "Business",
       desc: "Study trade, business, and economic strategies.",
       link: "/commerce",
     },
